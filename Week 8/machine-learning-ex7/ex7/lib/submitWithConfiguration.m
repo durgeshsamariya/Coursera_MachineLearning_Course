@@ -1,7 +1,7 @@
 function submitWithConfiguration(conf)
   addpath('./lib/jsonlab');
 
-  parts = parts(conf);
+  partss = parts(conf);
 
   fprintf('== Submitting solutions | %s...\n', conf.itemName);
 
@@ -19,7 +19,7 @@ function submitWithConfiguration(conf)
   end
 
   try
-    response = submitParts(conf, email, token, parts);
+    response = submitParts(conf, email, token, partss);
   catch
     e = lasterror();
     fprintf('\n!! Submission failed: %s\n', e.message);
@@ -34,7 +34,7 @@ function submitWithConfiguration(conf)
   elseif isfield(response, 'errorCode')
     fprintf('!! Submission failed: %s\n', response.message);
   else
-    showFeedback(parts, response);
+    showFeedback(partss, response);
     save(tokenFile, 'email', 'token');
   end
 end
@@ -63,9 +63,9 @@ end
 
 function response = submitParts(conf, email, token, parts)
   body = makePostBody(conf, email, token, parts);
-  submissionUrl = submissionUrl();
+  submission_Url = submissionUrl();
 
-  responseBody = getResponse(submissionUrl, body);
+  responseBody = getResponse(submission_Url, body);
   jsonResponse = validateResponse(responseBody);
   response = loadjson(jsonResponse);
 end
@@ -174,6 +174,6 @@ end
 % Service configuration
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function submissionUrl = submissionUrl()
-  submissionUrl = 'https://www-origin.coursera.org/api/onDemandProgrammingImmediateFormSubmissions.v1';
+function submission_Url = submissionUrl()
+  submission_Url = 'https://www-origin.coursera.org/api/onDemandProgrammingImmediateFormSubmissions.v1';
 end
